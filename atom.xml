@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chenjf-cn.github.io/chenjf.github.io/</id>
     <title>质量保障</title>
-    <updated>2022-04-28T05:54:45.987Z</updated>
+    <updated>2022-04-28T05:58:26.274Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chenjf-cn.github.io/chenjf.github.io/"/>
     <link rel="self" href="https://chenjf-cn.github.io/chenjf.github.io/atom.xml"/>
@@ -25,7 +25,7 @@
         <link href="https://chenjf-cn.github.io/chenjf.github.io/post/qian-yan/">
         </link>
         <updated>2019-03-01T02:25:10.000Z</updated>
-        <content type="html"><![CDATA[<p>此博客内容为质量保障方向</p>
+        <content type="html"><![CDATA[<p>作者是混迹多个互联网公司的测试菜鸟 ,专注于质量保障方向内容的分享</p>
 ]]></content>
     </entry>
     <entry>
