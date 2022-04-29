@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chenjf-cn.github.io/chenjf.github.io/</id>
     <title>质量保障</title>
-    <updated>2022-04-29T08:01:10.168Z</updated>
+    <updated>2022-04-29T08:01:23.622Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chenjf-cn.github.io/chenjf.github.io/"/>
     <link rel="self" href="https://chenjf-cn.github.io/chenjf.github.io/atom.xml"/>
@@ -10,4 +10,15 @@
     <logo>https://chenjf-cn.github.io/chenjf.github.io/images/avatar.png</logo>
     <icon>https://chenjf-cn.github.io/chenjf.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, 质量保障</rights>
+    <entry>
+        <title type="html"><![CDATA[前言]]></title>
+        <id>https://chenjf-cn.github.io/chenjf.github.io/post/qian-yan/</id>
+        <link href="https://chenjf-cn.github.io/chenjf.github.io/post/qian-yan/">
+        </link>
+        <updated>2017-04-11T06:19:11.000Z</updated>
+        <content type="html"><![CDATA[<p>本站专注于质量保障方向的内容建设, 记录日常工作的思考和问题的解决方案.<br>
+作者是混迹多家互联网公司的测试菜鸟<br>
+联系方式: 794297522 (QQ) 加好友请备注来意.</p>
+]]></content>
+    </entry>
 </feed>
