@@ -1,0 +1,162 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<meta charset="utf-8" >
+
+<title>精准测试的开发落地 | 质量保障</title>
+<meta name="description" content="记录日常工作中遇到的问题和解决方案">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chenjf-cn.github.io/chenjf.github.io//favicon.ico?v=1662370640451">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://chenjf-cn.github.io/chenjf.github.io//styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://chenjf-cn.github.io/chenjf.github.io/">
+        <img class="avatar" src="https://chenjf-cn.github.io/chenjf.github.io//images/avatar.png?v=1662370640451" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://chenjf-cn.github.io/chenjf.github.io/">
+        <h1 class="site-title">质量保障</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="https://chenjf-cn.github.io/chenjf.github.io" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="https://chenjf-cn.github.io/chenjf.github.io/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">精准测试的开发落地</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2021-09-06</span>
+            
+          </div>
+          <div class="post-content">
+            <h1 id="一-前言">一 前言</h1>
+<p>公司整体架构是以dubbo框架为主的微服务设计, 分布式服务下, 测试也面临了下面几个问题<br>
+1 业务快速迭代下, 全量回归很难做到, 如何科学的进行测试分析, 把握测试重点需要依赖开发和测试同学的业务代码熟悉程度来主观评估, 容易出现思维盲区导致漏测<br>
+2 测试过程中不知道测试的点是否覆盖了全部的逻辑分支, 没有准确的数据衡量测试结果, 上线信心不足<br>
+经过一些前沿技术调研, 上面的2个问题, 我们研发了精准测试工具来解决</p>
+<h1 id="二-精准测试平台方案设计">二 精准测试平台方案设计</h1>
+<h2 id="核心步骤">核心步骤</h2>
+<p><strong>识别变更代码</strong>: 通过AST语法树分析两个迭代版本的方法和注解等信息,去除空格 换行 等噪音, 即可得到新增 删除 修改的 方法<br>
+<strong>分析自身接口影响</strong>: 将两个迭代版本代码通过jgit和maven invoked编译成class字节码文件, 在通过ASM字节码框架生成接口内部调用链, 要注意接口和匿名内部类lambda表达式的桥接, 通过比对两个迭代版本的接口调用链树节点信息, 即可得到被影响的接口<br>
+<strong>获取上层业务影响</strong>: 这个需要看一下你们自己公司用的是什么分布式链路追踪, 我们团队有现成分布式链路追踪查询平台的, 对于没有现成的分布式调用链的团队, 可以参考接入开源工具skywalking的使用<br>
+<strong>测试结果度量</strong>: 集成jacoco获取探针数组, 计算出增量覆盖率和接口链路维度覆盖率, 进行质量卡点</p>
+<h1 id="三-实践">三 实践</h1>
+<p>耗时2个月左右 第一版精准测试平台上线, 主要能力可以扫描出代码 新增修改删除的方法, 查找出被影响的接口以及接口的调用链, 支持方法覆盖率 增量覆盖率和全量覆盖率的质量卡点<br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662370395670.png" alt="" loading="lazy"><br>
+通过精准平台的几次测试, 找出了部分遗漏的思维盲区, 减少了部分漏测的业务场景, 同时测试完成后, 我们结合方法的分支覆盖率情况分析, 补充了之前未考虑到的大量异常业务场景用例, 提升了服务可靠性</p>
+<h1 id="四-落地后续">四 落地后续</h1>
+<p>精准落地了一段时间后, 我们发现了一些新的问题<br>
+团队的成员代码水平参差不齐, 大概分三个层次</p>
+<ol>
+<li>有能独立开发测试平台, 看的懂业务代码的</li>
+<li>能写一些自动化代码, 写测试平台吃力的</li>
+<li>代码基本不会的功能业务测试<br>
+<strong>措施</strong><br>
+一类的测试同学不需要特殊指导, 通过分支覆盖率查看对应业务代码就可以推断出大概是什么业务场景没考虑到进行针对的用例补充<br>
+二类的测试同学在一类同学指导下也能渐渐入门了解业务代码<br>
+重点是三类的测试同学, 使用精准平台会出现分支覆盖率只是个数字, 无法针对性的补充业务用例<br>
+针对三类同学, 我们团队组织了自动化培训和专项分享等, 尽量让团队保持技术氛围, 带动三类同学往二类同学靠齐<br>
+除了针对的技术培训外, 精准平台也支持覆盖率实时染色的功能<br>
+支持清除方法级别的覆盖率, 支持跳转到方法上下级的节点, 帮助测试同学深入的了解业务代码的实现和流转路径<br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662370466904.png" alt="" loading="lazy"></li>
+</ol>
+
+          </div>
+        </div>
+
+        
+          <div class="next-post">
+            <a class="purple-link" href="https://chenjf-cn.github.io/chenjf.github.io/post/test-sdk-api/">
+              <h3 class="post-title">
+                下一篇：Test SDK API
+              </h3>
+            </a>
+          </div>
+          
+      </div>
+
+      
+
+      <div class="site-footer">
+  <div class="slogan">记录日常工作中遇到的问题和解决方案</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+   | <a class="rss" href="https://chenjf-cn.github.io/chenjf.github.io//atom.xml" target="_blank">RSS</a>
+</div>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>
