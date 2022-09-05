@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chenjf-cn.github.io/chenjf.github.io/</id>
     <title>质量保障</title>
-    <updated>2022-09-05T09:09:13.956Z</updated>
+    <updated>2022-09-05T09:15:06.774Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chenjf-cn.github.io/chenjf.github.io/"/>
     <link rel="self" href="https://chenjf-cn.github.io/chenjf.github.io/atom.xml"/>
@@ -97,7 +97,7 @@ Demo 是 SDK 提供方用来示例如何调用接口实现具体的功能，也�
 需要降低测试同学的使用门槛去除SDK的开发语言对测试的影响<br>
 需要避免SDK开发在测试中投入过多的资源, 尽量测试左移<br>
 能一站式管理用例,持续集成, 定时运行case<br>
-设计方案<br>
+<strong>设计方案</strong><br>
 <img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367579913.png" alt="" loading="lazy"><br>
 <strong>核心思想</strong>: 将不同语言的SDK抽象成服务器接口摈弃SDK工具包语言的区别,统一在PC端入口调试,同时提供Test APP可以调试SDK工具包内的API<br>
 <strong>SDK测试服务平台</strong><br>
