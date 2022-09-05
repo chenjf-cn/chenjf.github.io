@@ -1,0 +1,197 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    
+<meta charset="utf-8" >
+
+<title>Test SDK API | 质量保障</title>
+<meta name="description" content="记录日常工作中遇到的问题和解决方案">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://chenjf-cn.github.io/chenjf.github.io//favicon.ico?v=1662367845861">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://chenjf-cn.github.io/chenjf.github.io//styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+      <div class="site-header-container">
+  <div class="site-header">
+    <div class="left">
+      <a href="https://chenjf-cn.github.io/chenjf.github.io/">
+        <img class="avatar" src="https://chenjf-cn.github.io/chenjf.github.io//images/avatar.png?v=1662367845861" alt="" width="32px" height="32px">
+      </a>
+      <a href="https://chenjf-cn.github.io/chenjf.github.io/">
+        <h1 class="site-title">质量保障</h1>
+      </a>
+    </div>
+    <div class="right">
+      <transition name="fade">
+        <i class="icon" :class="{ 'icon-close-outline': menuVisible, 'icon-menu-outline': !menuVisible }" @click="menuVisible = !menuVisible"></i>
+      </transition>
+    </div>
+  </div>
+</div>
+
+<transition name="fade">
+  <div class="menu-container" style="display: none;" v-show="menuVisible">
+    <div class="menu-list">
+      
+        
+          <a href="https://chenjf-cn.github.io/chenjf.github.io" class="menu purple-link">
+            首页
+          </a>
+        
+      
+        
+          <a href="https://chenjf-cn.github.io/chenjf.github.io/tags" class="menu purple-link">
+            标签
+          </a>
+        
+      
+    </div>
+  </div>
+</transition>
+
+
+      <div class="content-container">
+        <div class="post-detail">
+          
+          <h2 class="post-title">Test SDK API</h2>
+          <div class="post-info post-detail-info">
+            <span><i class="icon-calendar-outline"></i> 2022-09-05</span>
+            
+          </div>
+          <div class="post-content">
+            <p>文本主要分享SDK的基于API的测试思路<br>
+#一 SDK介绍<br>
+客户端SDK是为第三方开发者提供的软件开发工具包，包括SDK接口、开发文档和Demo示例等。<br>
+以涂鸦 App SDK 为例, 他提供了一些物联网能力，方便开发者更加快速地连接涂鸦生态中的智能硬件产品。开发者可以基于 App SDK 快速地实现 App 功能的开发，实现对智能设备的配网、控制、固件升级、定时任务和智能场景创建等操作。整体工作流程如下图<br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367152577.png" alt="" loading="lazy"><br>
+#二 测试对象<br>
+<strong>接入文档</strong><br>
+SDK 面向的是开发者，正确引导开发者接入 SDK 是必要的<br>
+<strong>SDK API</strong><br>
+SDK 的核心内容，也是主要测试对象<br>
+<strong>Demo</strong><br>
+Demo 是 SDK 提供方用来示例如何调用接口实现具体的功能，也可以作为开发者直观感受 SDK 接入效果<br>
+#三 测试内容<br>
+<strong>功能测试</strong>: 保证SDK接口功能正确性和完备性。客户端SDK接口测试跟服务端接口测试类似，包括场景覆盖和接口参数覆盖<br>
+<strong>兼容测试</strong>: 保证SDK兼容特定的设备平台，并与其他软件兼容。根据产品需求和市场现状对需要适配的设备平台做分析，再根据需要覆盖的机型、系统版本、分辨率等进行优先覆盖排序<br>
+<strong>网络测试</strong>: 保证在不同网络类型，不同网络环境下，SDK接口都能较好的处理<br>
+<strong>安全测试</strong>: 对隐私数据保护，访问权限的控制，用户服务鉴权等，SDK接口的安全性问题也是比较突出。安全性很多是在架构设计和开发设计中就考虑进去，但是最好还是有专门的安全性测试<br>
+<strong>性能测试</strong>: 保证SDK接口满足特定的性能需求，比如资源占用、移动设备耗电量<br>
+<strong>压力测试</strong>: 考察业务场景在一定压力下，持续运行一段时间，接口功能和设备资源占用有无异常<br>
+#四 测试手段<br>
+对SDK测试，可以采用的分层测试方式由上至下依次有：基于Demo-&gt;基于api调用-&gt;基于源码<br>
+<strong>基于Demo APP的功能测试</strong><br>
+优点: 测试人员可以比较直观的看到界面表现，上手快，所以在客户端SDK测试中比较常用<br>
+缺点: Demo对接口和业务场景覆盖比较有限，对接口的输入输出参数不能全覆盖，发现问题时定位复杂度增加。精心设计的Demo需要较多的开发投入资源，也使得问题暴露的时间大大滞后<br>
+<strong>基于API的接口测试</strong><br>
+优点: 基于接口调用的测试，包括对单个接口的测试，也包括业务场景的覆盖。这种测试方式直接有效,覆盖率高，因为SDK接口通常比较稳定，所以一旦实现并投入使用，测试效率和质量的收益都很大<br>
+缺点: 测试需要一定的移动端开发基础, 对测试人员要求较高<br>
+<strong>基于源码单元测试</strong><br>
+优点: 单元测试是为开发代码质量保驾护航的一个重要环节，在测试左移推进的道路上，大家越来越意识到单元测试的重要价值。特别是在一些核心业务上，值得开发同学投入精力去做。<br>
+缺点: 全量代码的单元测试,开发人力资源投入大, 成本高<br>
+#五 基于API制定测试方案<br>
+<strong>团队核心诉求</strong><br>
+需要有直观的界面,能快速上手<br>
+需要支持单接口的测试和多接口场景化流程的测试<br>
+需要降低测试同学的使用门槛去除SDK的开发语言对测试的影响<br>
+需要避免SDK开发在测试中投入过多的资源, 尽量测试左移<br>
+能一站式管理用例,持续集成, 定时运行case<br>
+设计方案<br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367579913.png" alt="" loading="lazy"><br>
+<strong>核心思想</strong>: 将不同语言的SDK抽象成服务器接口摈弃SDK工具包语言的区别,统一在PC端入口调试,同时提供Test APP可以调试SDK工具包内的API<br>
+<strong>SDK测试服务平台</strong><br>
+提供SDK的API接口请求调用可视化页面<br>
+负责SDK公版APP的通信交互和统一调度<br>
+提供用例管理,定时任务,接口覆盖率统计等模块<br>
+<strong>SDK Test APP</strong><br>
+通过反射, AST语法树解析SDK工具包的API同步给平台<br>
+提供监听器,监听平台发来的API调用命令<br>
+设计执行引擎, 接收平台的API调用命令去SDK工具包内调用将执行结果同步到平台<br>
+提供在手机上调试API和执行平台用例的能力<br>
+<strong>方案框架图</strong><br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367610829.png" alt="" loading="lazy"><br>
+<strong>SDK API回调函数难点解决</strong><br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367652337.png" alt="" loading="lazy"><br>
+上面是涂鸦大部分SDK使用接口的方式,通过TuyaSdk获取一个实例对象Instance调用实例对象的API方法,传入参数和接口回调函数,如果成功调用就会回调onSuccess , 失败回调onError函数.<br>
+但是这里存在一个问题, 这个方法的参数是一个回调接口, 回调接口必须实现才能,通过反射调用, 所以为了解决这个问题, 我们选择通过动态代理来代理了回调函数,  这样就解决了回调函数必须实现的问题<br>
+#六 成果展示<br>
+<strong>Web在线调试SDK API</strong><br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367738090.png" alt="" loading="lazy"><br>
+<strong>Test SDK App调试API</strong><br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367753415.png" alt="" loading="lazy"><br>
+<strong>平台测试用例持续集成</strong><br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367768000.png" alt="" loading="lazy"><br>
+<strong>对外赋能</strong><br>
+向嵌入式团队提供SDK Test App , 使嵌入式团队具有API配网的能力, 从而完成树莓派嵌入式模块的自动化持续集成<br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367782625.png" alt="" loading="lazy"><br>
+集成树莓派内容不是本文重点, 不在详细赘述.</p>
+
+          </div>
+        </div>
+
+        
+          <div class="next-post">
+            <a class="purple-link" href="https://chenjf-cn.github.io/chenjf.github.io/post/ye-wu-ji-zhu-tu-pu-jian-she-shi-jian/">
+              <h3 class="post-title">
+                下一篇：业务技术图谱建设实践
+              </h3>
+            </a>
+          </div>
+          
+      </div>
+
+      
+
+      <div class="site-footer">
+  <div class="slogan">记录日常工作中遇到的问题和解决方案</div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+   | <a class="rss" href="https://chenjf-cn.github.io/chenjf.github.io//atom.xml" target="_blank">RSS</a>
+</div>
+
+
+    </div>
+    <script type="application/javascript">
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>
