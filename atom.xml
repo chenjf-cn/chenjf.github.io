@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://chenjf-cn.github.io/chenjf.github.io/</id>
     <title>质量保障</title>
-    <updated>2022-09-05T09:04:01.173Z</updated>
+    <updated>2022-09-05T09:05:39.327Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://chenjf-cn.github.io/chenjf.github.io/"/>
     <link rel="self" href="https://chenjf-cn.github.io/chenjf.github.io/atom.xml"/>
@@ -11,11 +11,55 @@
     <icon>https://chenjf-cn.github.io/chenjf.github.io/favicon.ico</icon>
     <rights>All rights reserved 2022, 质量保障</rights>
     <entry>
+        <title type="html"><![CDATA[业务技术图谱建设实践]]></title>
+        <id>https://chenjf-cn.github.io/chenjf.github.io/post/ye-wu-ji-zhu-tu-pu-jian-she-shi-jian/</id>
+        <link href="https://chenjf-cn.github.io/chenjf.github.io/post/ye-wu-ji-zhu-tu-pu-jian-she-shi-jian/">
+        </link>
+        <updated>2022-08-12T06:08:04.000Z</updated>
+        <content type="html"><![CDATA[<h1 id="一-前言">一 前言</h1>
+<p>在互联网行业中, 人员流动变化快, 文档沉淀少且历史编写的文档和现有业务差异大, 每个新入职同学在熟悉公司项目的时候异常的痛苦. 是否能通过一些措施帮助新同学尽快熟悉项目呢,为此做了一些思考和实践.</p>
+<h1 id="二-问题">二 问题</h1>
+<p>当新同学加入时, 最重要的两件事就是融入团队和理清业务.<br>
+融入环境可以通过新人导师, 团队聚餐等方式融入, 此内容不是本篇重点, 不在详细展开. 接下去我们详细的说一下理清业务<br>
+当一个新同学接手迭代n次的大型老系统时, 从产品角度上我们首先需要知道业务的产品矩阵和业务重点, 但是这些只能了解项目的基本情况. 互联网微服务系统架构下, 不深入了解应用系统的关联关系是无法保障被测服务的质量的. 同时微服务架构下, 大多开发只熟悉自己负责的模块应用, 依据历史沉淀的文档, 花费大量时间也很难系统的理清应用接口之间复杂的关系.<br>
+为了解决上面遇到的问题, 我们尝试建设系统的业务技术图谱来降低上手被测应用的难度和提高效率</p>
+<h1 id="三-实践">三 实践</h1>
+<p>通过和新同学的沟通和日常的工作情况, 我们总结了几个核心诉求:<br>
+1 支持应用关系的上下游括扑图查询<br>
+2 支持查询接口注释信息, 出入参信息<br>
+3 支持查询接口和数据库表的关系<br>
+4 支持查询rpc接口间的调用时序时序图</p>
+<h2 id="实现思路">实现思路</h2>
+<p>公司内部的rpc接口都为dubbo接口, 生产者应用的dubbo接口肯定为消费者应用接口方法的末节点方法, 我们拿到消费者应用接口调用链的末方法节点和生产者应用的开放dubbo接口进行匹配即可得到两个应用的rpc上下游关系.<br>
+例如下图一消费者代码引用了dubbo服务, 代码暴露出去的Http接口DemoConsumerController sayHello链路中末方法节点为DemoService的sayHello的Dubbo接口, 即DemoService接口的sayHello方法为DemoConsumerController sayHello Http接口的下游rpc接口<br>
+<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284650459.png" alt="" loading="lazy"></p>
+<h2 id="整体设计方案">整体设计方案</h2>
+<figure data-type="image" tabindex="1"><img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284662127.png" alt="" loading="lazy"></figure>
+<h2 id="实现步骤">实现步骤</h2>
+<p>● 基于开源的Jgit框架拉取全部业务工程代码<br>
+● 扫描Java源文件通过Java parse将源码转换成抽象语法树, 拿到所有类信息及注释及返回的数据bean存储到redis<br>
+● 通过Maven Invoker编译工程得到Class字节码文件<br>
+● 扫描dubbo_provider.xml的配置信息和@Service @DubboService @Component @RestController @Controller等一些列注解得到Http接口和Dubbo接口入口<br>
+● 扫描mybatis_mapper.xml和mybatis注解将dao层方法和数据表关联<br>
+● 通过字节码指令分析生成全部应该调用链,  分析全量的数据进行全部应用的首尾节点匹配,得到所有rpc的上下游关系落库<br>
+● Java每个线程中方法执行存储为栈结构, 方法的调用具有顺序关系, 也就是时间关系, 因此可以将链表转换成图结构形成时序图</p>
+<h2 id="结果展示">结果展示</h2>
+<h3 id="应用的上下游和括扑图">应用的上下游和括扑图</h3>
+<figure data-type="image" tabindex="2"><img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284688950.png" alt="" loading="lazy"></figure>
+<h3 id="rpc接口上下游调用关系">rpc接口上下游调用关系</h3>
+<figure data-type="image" tabindex="3"><img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284700705.png" alt="" loading="lazy"></figure>
+<h3 id="接口调用时序业务图">接口调用时序业务图</h3>
+<figure data-type="image" tabindex="4"><img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284717020.png" alt="" loading="lazy"></figure>
+<h3 id="接口和数据库表关联">接口和数据库表关联</h3>
+<p>未完待续</p>
+]]></content>
+    </entry>
+    <entry>
         <title type="html"><![CDATA[Test SDK API]]></title>
         <id>https://chenjf-cn.github.io/chenjf.github.io/post/test-sdk-api/</id>
         <link href="https://chenjf-cn.github.io/chenjf.github.io/post/test-sdk-api/">
         </link>
-        <updated>2022-09-05T08:37:04.000Z</updated>
+        <updated>2021-08-04T08:37:04.000Z</updated>
         <content type="html"><![CDATA[<p>文本主要分享SDK的基于API的测试思路<br>
 #一 SDK介绍<br>
 客户端SDK是为第三方开发者提供的软件开发工具包，包括SDK接口、开发文档和Demo示例等。<br>
@@ -82,50 +126,6 @@ Demo 是 SDK 提供方用来示例如何调用接口实现具体的功能，也�
 向嵌入式团队提供SDK Test App , 使嵌入式团队具有API配网的能力, 从而完成树莓派嵌入式模块的自动化持续集成<br>
 <img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1662367782625.png" alt="" loading="lazy"><br>
 集成树莓派内容不是本文重点, 不在详细赘述.</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[业务技术图谱建设实践]]></title>
-        <id>https://chenjf-cn.github.io/chenjf.github.io/post/ye-wu-ji-zhu-tu-pu-jian-she-shi-jian/</id>
-        <link href="https://chenjf-cn.github.io/chenjf.github.io/post/ye-wu-ji-zhu-tu-pu-jian-she-shi-jian/">
-        </link>
-        <updated>2022-08-12T06:08:04.000Z</updated>
-        <content type="html"><![CDATA[<h1 id="一-前言">一 前言</h1>
-<p>在互联网行业中, 人员流动变化快, 文档沉淀少且历史编写的文档和现有业务差异大, 每个新入职同学在熟悉公司项目的时候异常的痛苦. 是否能通过一些措施帮助新同学尽快熟悉项目呢,为此做了一些思考和实践.</p>
-<h1 id="二-问题">二 问题</h1>
-<p>当新同学加入时, 最重要的两件事就是融入团队和理清业务.<br>
-融入环境可以通过新人导师, 团队聚餐等方式融入, 此内容不是本篇重点, 不在详细展开. 接下去我们详细的说一下理清业务<br>
-当一个新同学接手迭代n次的大型老系统时, 从产品角度上我们首先需要知道业务的产品矩阵和业务重点, 但是这些只能了解项目的基本情况. 互联网微服务系统架构下, 不深入了解应用系统的关联关系是无法保障被测服务的质量的. 同时微服务架构下, 大多开发只熟悉自己负责的模块应用, 依据历史沉淀的文档, 花费大量时间也很难系统的理清应用接口之间复杂的关系.<br>
-为了解决上面遇到的问题, 我们尝试建设系统的业务技术图谱来降低上手被测应用的难度和提高效率</p>
-<h1 id="三-实践">三 实践</h1>
-<p>通过和新同学的沟通和日常的工作情况, 我们总结了几个核心诉求:<br>
-1 支持应用关系的上下游括扑图查询<br>
-2 支持查询接口注释信息, 出入参信息<br>
-3 支持查询接口和数据库表的关系<br>
-4 支持查询rpc接口间的调用时序时序图</p>
-<h2 id="实现思路">实现思路</h2>
-<p>公司内部的rpc接口都为dubbo接口, 生产者应用的dubbo接口肯定为消费者应用接口方法的末节点方法, 我们拿到消费者应用接口调用链的末方法节点和生产者应用的开放dubbo接口进行匹配即可得到两个应用的rpc上下游关系.<br>
-例如下图一消费者代码引用了dubbo服务, 代码暴露出去的Http接口DemoConsumerController sayHello链路中末方法节点为DemoService的sayHello的Dubbo接口, 即DemoService接口的sayHello方法为DemoConsumerController sayHello Http接口的下游rpc接口<br>
-<img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284650459.png" alt="" loading="lazy"></p>
-<h2 id="整体设计方案">整体设计方案</h2>
-<figure data-type="image" tabindex="1"><img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284662127.png" alt="" loading="lazy"></figure>
-<h2 id="实现步骤">实现步骤</h2>
-<p>● 基于开源的Jgit框架拉取全部业务工程代码<br>
-● 扫描Java源文件通过Java parse将源码转换成抽象语法树, 拿到所有类信息及注释及返回的数据bean存储到redis<br>
-● 通过Maven Invoker编译工程得到Class字节码文件<br>
-● 扫描dubbo_provider.xml的配置信息和@Service @DubboService @Component @RestController @Controller等一些列注解得到Http接口和Dubbo接口入口<br>
-● 扫描mybatis_mapper.xml和mybatis注解将dao层方法和数据表关联<br>
-● 通过字节码指令分析生成全部应该调用链,  分析全量的数据进行全部应用的首尾节点匹配,得到所有rpc的上下游关系落库<br>
-● Java每个线程中方法执行存储为栈结构, 方法的调用具有顺序关系, 也就是时间关系, 因此可以将链表转换成图结构形成时序图</p>
-<h2 id="结果展示">结果展示</h2>
-<h3 id="应用的上下游和括扑图">应用的上下游和括扑图</h3>
-<figure data-type="image" tabindex="2"><img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284688950.png" alt="" loading="lazy"></figure>
-<h3 id="rpc接口上下游调用关系">rpc接口上下游调用关系</h3>
-<figure data-type="image" tabindex="3"><img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284700705.png" alt="" loading="lazy"></figure>
-<h3 id="接口调用时序业务图">接口调用时序业务图</h3>
-<figure data-type="image" tabindex="4"><img src="https://chenjf-cn.github.io/chenjf.github.io//post-images/1660284717020.png" alt="" loading="lazy"></figure>
-<h3 id="接口和数据库表关联">接口和数据库表关联</h3>
-<p>未完待续</p>
 ]]></content>
     </entry>
     <entry>
